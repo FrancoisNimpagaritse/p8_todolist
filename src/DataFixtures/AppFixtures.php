@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
 
         $userAdmin = new User();
 
-        $hash = $this->encoder->encodePassword($userAdmin, "password");
+        $hash = $this->encoder->encodePassword($userAdmin, 'password');
 
         $userAdmin->setUsername('Francis')
                 ->setEmail('franimpa@yahoo.fr')
