@@ -7,8 +7,8 @@ use App\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 class UserController extends AbstractController
 {
@@ -25,7 +25,7 @@ class UserController extends AbstractController
      *
      * @IsGranted("ROLE_ADMIN")
      */
-    public function createAction(Request $request, UserPasswordHasherInterface $passwordHasher)
+    public function createAction(Request $request, UserPasswordEncoder $encoder)
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -35,7 +35,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $hash = $passwordHasher->hashPassword($user, $user->getPassword());
+            $hash = $encoder->encodePassword($user, $user->getPassword());
 
             $user->setPassword($hash);
 
@@ -53,14 +53,14 @@ class UserController extends AbstractController
     /**
      * @Route("/users/{id}/edit", name="user_edit")
      */
-    public function editAction(User $user, Request $request, UserPasswordHasherInterface $passwordHasher)
+    public function editAction(User $user, Request $request, UserPasswordEncoder $encoder)
     {
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $hash = $passwordHasher->hashPassword($user, $user->getPassword());
+            $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
 
             $this->getDoctrine()->getManager()->flush();
