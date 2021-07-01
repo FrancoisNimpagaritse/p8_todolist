@@ -1,0 +1,17 @@
+language: php
+php:
+  - '7.2'
+  - '7.3'
+
+services:
+  - mysql
+
+install:
+  - composer install --prefer-dist --no-interaction
+  - php bin/console doctrine:database:create --env=test
+  - php bin/console doctrine:schema:update --force --env=test
+  - php bin/console doctrine:fixtures:load -n --env=test
+
+script:
+   - composer install
+   - vendor/bin/phpunit
