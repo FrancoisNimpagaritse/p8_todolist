@@ -20,17 +20,14 @@
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
         </testsuite>
-    </testsuites>
-
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">src</directory>
-        </include>
-    </coverage>
+    </testsuites>    
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
+            <exclude>
+                    <directory>src/DataFixtures</directory>
+            </exclude>
         </whitelist>
     </filter>
 
@@ -41,7 +38,11 @@
     <logging>
         <log type="coverage-html" target="coverage"/>
     </logging>
-
+    
+    <extensions>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
+    </extensions>
+    
     <!-- Run `composer require symfony/panther` before enabling this extension -->
     <!--
     <extensions>
