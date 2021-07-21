@@ -105,22 +105,6 @@ class TaskControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('div.alert-success')->count());
     }
 
-    /*  //tester si le lien d'edition conduit vers la page de modification
-
-      //tester si l'autorisation marche : cas où on est pas auteur de la tache
-      public  function testLinkToEditWorksIfTaskOwner()
-      {
-          $crawler = $this->client->request('GET', '/tasks');
-          $link = $crawler->selectLink('')->link();
-          $crawler = $this->client->click($link);
-      }
-
-       //tester si l'autorisation marche : cas où on est admin et owner est anonyme
-       public  function testLinkToEditWorksIfTaskOwnerIsAnynymeAndUserHasRoleAdmin()
-       {
-
-       } */
-
     public function testOwnerAndLoggedUserCanDeleteHisTask()
     {
         $entityManager = $this->client->getContainer()->get('doctrine.orm.default_entity_manager');
@@ -150,13 +134,13 @@ class TaskControllerTest extends WebTestCase
 
         $loggedUser = $userRepository->findOneByUsername('Toto');
         $this->client->loginUser($loggedUser);
-
+        
         $anonymeUser = $userRepository->findOneByUsername('anonyme');
-
+        
         $taskRepository = $entityManager->getRepository(Task::class);
         $oneAnonymeTask = $taskRepository->findBy(['author' => $anonymeUser], [], 1, null);
         $taskId = $oneAnonymeTask[0]->getId();
-
+        
         $this->client->request('GET', "/tasks/{$taskId}/delete");
 
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
@@ -169,13 +153,13 @@ class TaskControllerTest extends WebTestCase
 
         $loggedUser = $userRepository->findOneByUsername('Francis');
         $this->client->loginUser($loggedUser);
-
+        
         $anonymeUser = $userRepository->findOneByUsername('anonyme');
-
+        
         $taskRepository = $entityManager->getRepository(Task::class);
         $oneAnonymeTask = $taskRepository->findBy(['author' => $anonymeUser], [], 1, null);
         $taskId = $oneAnonymeTask[0]->getId();
-
+        
         $this->client->request('GET', "/tasks/{$taskId}/delete");
 
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
