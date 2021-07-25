@@ -23,15 +23,15 @@ class TaskVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
-        
+
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'CAN_EDIT':
-                return ($subject->getAuthor() === $user || ($subject->getAuthor()->getUsername() === 'anonyme' && $user->getRoles()['0'] === 'ROLE_ADMIN'));
+                return $subject->getAuthor() === $user || ('anonyme' === $subject->getAuthor()->getUsername() && 'ROLE_ADMIN' === $user->getRoles()['0']);
             case 'CAN_TOGGLE':
-                return ($subject->getAuthor() === $user || ($subject->getAuthor()->getUsername() === 'anonyme' && $user->getRoles()['0'] === 'ROLE_ADMIN'));
-            case 'CAN_DELETE':                
-                return ($subject->getAuthor() === $user || ($subject->getAuthor()->getUsername() === 'anonyme' && $user->getRoles()['0'] === 'ROLE_ADMIN'));
+                return $subject->getAuthor() === $user || ('anonyme' === $subject->getAuthor()->getUsername() && 'ROLE_ADMIN' === $user->getRoles()['0']);
+            case 'CAN_DELETE':
+                return $subject->getAuthor() === $user || ('anonyme' === $subject->getAuthor()->getUsername() && 'ROLE_ADMIN' === $user->getRoles()['0']);
         }
 
         return false;

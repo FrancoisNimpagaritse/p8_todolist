@@ -6,9 +6,7 @@ use App\Entity\Task;
 use App\Form\TaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class TaskController extends AbstractController
 {
@@ -69,7 +67,6 @@ class TaskController extends AbstractController
             'form' => $form->createView(),
             'task' => $task,
         ]);
-       
     }
 
     /**
@@ -78,14 +75,13 @@ class TaskController extends AbstractController
     public function toggleTaskAction(Task $task)
     {
         $this->denyAccessUnlessGranted('CAN_TOGGLE', $task, "Vous n'êtes le propriétaire de cette tâche !");
-        
+
         $task->toggle(!$task->isDone());
         $this->getDoctrine()->getManager()->flush();
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
         return $this->redirectToRoute('task_list');
-        
     }
 
     /**
@@ -96,7 +92,7 @@ class TaskController extends AbstractController
     public function deleteTaskAction(Task $task)
     {
         $this->denyAccessUnlessGranted('CAN_DELETE', $task, "Vous n'êtes le propriétaire de cette tâche !");
-        
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($task);
         $em->flush();
