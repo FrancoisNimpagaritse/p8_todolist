@@ -16,4 +16,8 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
-/coverage/
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###

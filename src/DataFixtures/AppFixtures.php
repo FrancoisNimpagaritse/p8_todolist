@@ -2,17 +2,17 @@
 
 namespace App\DataFixtures;
 
-use Faker\Factory;
 use App\Entity\Task;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
     /**
-     * Encoder of users passwords
+     * Encoder of users passwords.
      *
      * @var UserPasswordEncoderInterface
      */

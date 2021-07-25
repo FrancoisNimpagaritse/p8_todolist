@@ -7,7 +7,6 @@ use App\Form\TaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class TaskController extends AbstractController
 {
@@ -50,26 +49,24 @@ class TaskController extends AbstractController
      */
     public function editAction(Task $task, Request $request)
     {
-        if ($task->getAuthor() == $this->getUser() || ('anonyme' == $task->getAuthor()->getUsername() && $this->isGranted('ROLE_ADMIN'))) {
-            $form = $this->createForm(TaskType::class, $task);
+        $this->denyAccessUnlessGranted('CAN_EDIT', $task, "Vous n'êtes le propriétaire de cette tâche !");
 
-            $form->handleRequest($request);
+        $form = $this->createForm(TaskType::class, $task);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->getDoctrine()->getManager()->flush();
+        $form->handleRequest($request);
 
-                $this->addFlash('success', 'La tâche a bien été modifiée.');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
 
-                return $this->redirectToRoute('task_list');
-            }
+            $this->addFlash('success', 'La tâche a bien été modifiée.');
 
-            return $this->render('task/edit.html.twig', [
-                'form' => $form->createView(),
-                'task' => $task,
-            ]);
+            return $this->redirectToRoute('task_list');
         }
 
-        throw new AccessDeniedException('Vous navez pas le droit de modifier cette tâche !');
+        return $this->render('task/edit.html.twig', [
+            'form' => $form->createView(),
+            'task' => $task,
+        ]);
     }
 
     /**
@@ -77,16 +74,14 @@ class TaskController extends AbstractController
      */
     public function toggleTaskAction(Task $task)
     {
-        if ($task->getAuthor() == $this->getUser() || ('anonyme' == $task->getAuthor()->getUsername() && $this->isGranted('ROLE_ADMIN'))) {
-            $task->toggle(!$task->isDone());
-            $this->getDoctrine()->getManager()->flush();
+        $this->denyAccessUnlessGranted('CAN_TOGGLE', $task, "Vous n'êtes le propriétaire de cette tâche !");
 
-            $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+        $task->toggle(!$task->isDone());
+        $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('task_list');
-        }
+        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
-        throw new AccessDeniedException('Vous navez pas le droit de modifier cette tâche !');
+        return $this->redirectToRoute('task_list');
     }
 
     /**
@@ -96,16 +91,14 @@ class TaskController extends AbstractController
      */
     public function deleteTaskAction(Task $task)
     {
-        if ($task->getAuthor() == $this->getUser() || ('anonyme' == $task->getAuthor()->getUsername() && $this->isGranted('ROLE_ADMIN'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($task);
-            $em->flush();
+        $this->denyAccessUnlessGranted('CAN_DELETE', $task, "Vous n'êtes le propriétaire de cette tâche !");
 
-            $this->addFlash('success', 'La tâche a bien été supprimée.');
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($task);
+        $em->flush();
 
-            return $this->redirectToRoute('task_list');
-        }
+        $this->addFlash('success', 'La tâche a bien été supprimée.');
 
-        throw new AccessDeniedException('Vous navez pas le droit de supprimer cette tâche !');
+        return $this->redirectToRoute('task_list');
     }
 }
