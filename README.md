@@ -1,5 +1,6 @@
 Projet 8 - Améliorez une application existante de ToDo & Co
 ===========================================================
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/50520359f85347898e81e2a74a233cf6)](https://app.codacy.com/gh/FrancoisNimpagaritse/p8_todolist?utm_source=github.com&utm_medium=referral&utm_content=FrancoisNimpagaritse/p8_todolist&utm_campaign=Badge_Grade_Settings)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/24c0f26e4cae43d9869199013aa173f2)](https://www.codacy.com/gh/FrancoisNimpagaritse/P6SnowTricks/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=FrancoisNimpagaritse/P6SnowTricks&amp;utm_campaign=Badge_Grade)
 
 Dans mon parcours de Développeur d'application PHP/Symfony chez OpenClassrooms j'ai créé une application d'un site communautaire de partage de figures de snowboard avec le framework Symfony. 
