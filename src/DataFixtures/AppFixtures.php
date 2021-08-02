@@ -65,11 +65,11 @@ class AppFixtures extends Fixture
         for ($i = 1; $i <= 10; ++$i) {
             $task = new Task();
 
-            $task->setCreatedAt($faker->dateTimeThisDecade($max = 'now', $timezone = null))
+            $task->setCreatedAt($faker->dateTimeThisDecade('now', null))
                  ->setTitle($faker->sentence(2))
                  ->setContent($faker->paragraph(3))
-                 ->toggle($faker->randomElement($array = [true, false]))
-                 ->setAuthor($faker->randomElement($array = [$userAno, $userStd, $userAdmin]));
+                 ->toggle($faker->randomElement([true, false]))
+                 ->setAuthor($faker->randomElement([$userAno, $userStd, $userAdmin]));
 
             $manager->persist($task);
         }

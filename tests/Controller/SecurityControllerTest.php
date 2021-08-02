@@ -66,10 +66,10 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/');
         $link = $crawler->selectLink('Se déconnecter')->link();
 
-        $crawler = $client->click($link);
+        $client->click($link);
 
         $this->assertResponseRedirects('http://localhost/login');
-        $crawler = $client->followRedirect();
+        $client->followRedirect();
         $this->assertStringContainsString('Se connecter', $client->getResponse()->getContent());
     }
 
@@ -86,10 +86,10 @@ class SecurityControllerTest extends WebTestCase
         // simulate $testUser being logged in
         $client->loginUser($testUser);
 
-        $crawler = $client->request('GET', '/logout');
+        $client->request('GET', '/logout');
 
         $this->assertResponseRedirects('http://localhost/login');
-        $crawler = $client->followRedirect();
+        $client->followRedirect();
         $this->assertStringContainsString('Se connecter', $client->getResponse()->getContent());
     }
 }
