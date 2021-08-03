@@ -37,7 +37,11 @@ Installation
 
         php bin/console doctrine:fixtures:load
 
-    7. L'application est installé, vous pouvez commencer à travailler dessus !
+    7. Exécuter le sript de la migration pour relier les tâches sans utilistaur à l'utilisateur anonyme (et les refaire avec l'option --test):
+
+        php bin/console doctrine:migrations:execute --up 20210702155350
+
+    8. L'application est installé, vous pouvez commencer à travailler dessus !
 
 Bon travail
 -------------
